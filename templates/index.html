@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<h1>Listado de Equipos</h1>
+<a href="/equipo/nuevo">Agregar Nuevo Equipo</a>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Modelo</th>
+        <th>Categoría</th>
+        <th>Costo</th>
+        <th>Stock</th>
+        <th>Marca</th>
+        <th>Acciones</th>
+    </tr>
+    {% for equipo in equipos %}
+    <tr>
+        <td>{{ equipo.id }}</td>
+        <td>{{ equipo.nombre }}</td>
+        <td>{{ equipo.modelo_relacionado.nombre }}</td>
+        <td>{{ equipo.categoria_relacionada.nombre }}</td>
+        <td>{{ equipo.costo }}</td>
+        <td>{{ equipo.stock_relacionado.cantidad }}</td>
+        <td>{{ equipo.marca_relacionada.nombre }}</td>
+        <td>
+            <a href="/equipo/editar/{{ equipo.id }}">Editar</a>
+            <form action="/equipo/eliminar/{{ equipo.id }}" method="POST" style="display:inline;">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
