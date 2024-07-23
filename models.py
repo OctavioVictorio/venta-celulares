@@ -1,6 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from app import db  # Importar la instancia de db desde app.py
 
 class Equipo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

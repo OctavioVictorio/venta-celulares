@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
@@ -6,12 +6,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/venta_celulares'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy()
-db.init_app(app)
+
+db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-# Importar los modelos después de inicializar db y migrate
-from models import Equipo, Modelo, Marca, Categoria, Stock
+from models import Equipo, Equipo, Modelo, Marca, Categoria, Stock
 
 @app.route('/')
 def index():
@@ -84,3 +83,4 @@ def eliminar_equipo(id):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
