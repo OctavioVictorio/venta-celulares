@@ -28,23 +28,23 @@ def nuevo_equipo():
         categorias = Categoria.query.all()
         marcas = Marca.query.all()
         stocks = Stock.query.all()
-        
+
+        # Verifica que los datos se obtengan correctamente
         print(f"Modelos: {modelos}")
         print(f"Categorías: {categorias}")
         print(f"Marcas: {marcas}")
         print(f"Stocks: {stocks}")
-        
+
         return render_template('nuevo_equipo.html', modelos=modelos, categorias=categorias, marcas=marcas, stocks=stocks)
     
     if request.method == 'POST':
         try:
-            data = request.form
-            nombre = data.get('nombre')
-            modelo_id = int(data.get('modelo_id'))
-            categoria_id = int(data.get('categoria_id'))
-            marca_id = int(data.get('marca_id'))
-            costo = float(data.get('costo'))
-            stock_id = int(data.get('stock_id'))
+            nombre = request.form.get('nombre')
+            modelo_id = int(request.form.get('modelo_id'))
+            categoria_id = int(request.form.get('categoria_id'))
+            marca_id = int(request.form.get('marca_id'))
+            costo = float(request.form.get('costo'))
+            stock_id = int(request.form.get('stock_id'))
 
             nuevo_equipo = Equipo(
                 nombre=nombre,
@@ -85,6 +85,7 @@ def editar_equipo(id):
             return render_template('editar_equipo.html', equipo=equipo, modelos=modelos, categorias=categorias, marcas=marcas, stocks=stocks, error="No se pudo actualizar el equipo. Inténtalo de nuevo.")
 
     return render_template('editar_equipo.html', equipo=equipo, modelos=modelos, categorias=categorias, marcas=marcas, stocks=stocks)
+
 
 @app.route('/equipo/eliminar/<int:id>', methods=['POST'])
 def eliminar_equipo(id):
