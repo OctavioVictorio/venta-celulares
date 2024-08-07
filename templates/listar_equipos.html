@@ -27,7 +27,7 @@
                     <td>{{ equipo.stock_relacionado.cantidad }}</td>
                     <td>{{ equipo.marca_relacionado.nombre }}</td>
                     <td>
-                        <a href="/equipo/editar/{{ equipo.id }}" class="btn btn-sm btn-primary">Editar</a>
+                        <a href="/editar_equipo/{{ equipo.id }}" class="btn btn-sm btn-primary">Editar</a>
                         <form action="/equipo/eliminar/{{ equipo.id }}" method="post" style="display:inline;">
                             <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                         </form>
