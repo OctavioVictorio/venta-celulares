@@ -22,10 +22,10 @@
                 <tr>
                     <td>{{ equipo.nombre }}</td>
                     <td>{{ equipo.modelo_relacionado.nombre }}</td>
-                    <td>{{ equipo.categoria_relacionada.nombre }}</td>
+                    <td>{{ equipo.categoria_relacionado.nombre }}</td>
                     <td>{{ equipo.costo }}</td>
                     <td>{{ equipo.stock_relacionado.cantidad }}</td>
-                    <td>{{ equipo.marca_relacionada.nombre }}</td>
+                    <td>{{ equipo.marca_relacionado.nombre }}</td>
                     <td>
                         <a href="/equipo/editar/{{ equipo.id }}" class="btn btn-sm btn-primary">Editar</a>
                         <form action="/equipo/eliminar/{{ equipo.id }}" method="post" style="display:inline;">

@@ -10,9 +10,9 @@ class Equipo(db.Model):
     marca_id = db.Column(db.Integer, db.ForeignKey('marca.id'), nullable=False)
 
     modelo_relacionado = db.relationship('Modelo', backref=db.backref('equipos', lazy=True))
-    categoria_relacionada = db.relationship('Categoria', backref=db.backref('equipos', lazy=True))
+    categoria_relacionado = db.relationship('Categoria', backref=db.backref('equipos', lazy=True))
     stock_relacionado = db.relationship('Stock', backref=db.backref('equipos', lazy=True))
-    marca_relacionada = db.relationship('Marca', backref=db.backref('equipos', lazy=True))
+    marca_relacionado = db.relationship('Marca', backref=db.backref('equipos', lazy=True))
 
     accesorios = db.relationship('Accesorio', secondary='equipo_accesorios', backref=db.backref('equipos', lazy=True))
 
