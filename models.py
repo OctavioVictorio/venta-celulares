@@ -1,6 +1,7 @@
 from app import db  # Importar la instancia de db desde app.py
 
 class Equipo(db.Model):
+    __tablename__ = 'equipo'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     modelo_id = db.Column(db.Integer, db.ForeignKey('modelo.id'), nullable=False)
@@ -22,6 +23,7 @@ class EquipoAccesorios(db.Model):
     accesorio_id = db.Column(db.Integer, db.ForeignKey('accesorio.id'), primary_key=True)
 
 class Modelo(db.Model):
+    __tablename__ = 'modelo'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     fabricante_id = db.Column(db.Integer, db.ForeignKey('fabricante.id'), nullable=False)
@@ -29,19 +31,23 @@ class Modelo(db.Model):
     fabricante_relacionado = db.relationship('Fabricante', backref=db.backref('modelos', lazy=True))
 
 class Marca(db.Model):
+    __tablename__ = 'marca'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
 
 class Fabricante(db.Model):
+    __tablename__ = 'fabricante'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     pais_origen = db.Column(db.String(50))
 
 class Categoria(db.Model):
+    __tablename__ = 'categoria'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
 
 class Caracteristica(db.Model):
+    __tablename__ = 'caracteristica'
     id = db.Column(db.Integer, primary_key=True)
     tipo = db.Column(db.String(50), nullable=False)
     descripcion = db.Column(db.String(200), nullable=False)
@@ -49,11 +55,13 @@ class Caracteristica(db.Model):
     equipo_relacionado = db.relationship('Equipo', backref=db.backref('caracteristicas', lazy=True))
 
 class Stock(db.Model):
+    __tablename__ = 'stock'
     id = db.Column(db.Integer, primary_key=True)
     cantidad = db.Column(db.Integer, nullable=False)
     ubicacion = db.Column(db.String(50))
 
 class Proveedor(db.Model):
+    __tablename__ = 'proveedor'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
     contacto = db.Column(db.String(50))
@@ -61,6 +69,7 @@ class Proveedor(db.Model):
     accesorios = db.relationship('Accesorio', backref='proveedor', lazy=True)
 
 class Accesorio(db.Model):
+    __tablename__ = 'accesorio'
     id = db.Column(db.Integer, primary_key=True)
     tipo = db.Column(db.String(50), nullable=False)
     compatible_con = db.Column(db.String(50))

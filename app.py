@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from models import Equipo, Modelo, Marca, Categoria, Stock
+from models import Equipo, Modelo, Marca, Fabricante, Caracteristica, Stock, Proveedor, Accesorio
 
 @app.route('/')
 def index():
@@ -28,13 +28,6 @@ def nuevo_equipo():
         categorias = Categoria.query.all()
         marcas = Marca.query.all()
         stocks = Stock.query.all()
-
-        # Verifica que los datos se obtengan correctamente
-        print(f"Modelos: {modelos}")
-        print(f"Categorías: {categorias}")
-        print(f"Marcas: {marcas}")
-        print(f"Stocks: {stocks}")
-
         return render_template('nuevo_equipo.html', modelos=modelos, categorias=categorias, marcas=marcas, stocks=stocks)
     
     if request.method == 'POST':
@@ -86,13 +79,48 @@ def editar_equipo(id):
 
     return render_template('editar_equipo.html', equipo=equipo, modelos=modelos, categorias=categorias, marcas=marcas, stocks=stocks)
 
-
 @app.route('/equipo/eliminar/<int:id>', methods=['POST'])
 def eliminar_equipo(id):
     equipo = Equipo.query.get_or_404(id)
     db.session.delete(equipo)
     db.session.commit()
     return redirect(url_for('listar_equipos'))
+
+# Nuevas rutas para modelos y otros datos
+@app.route('/modelos')
+def listar_modelos():
+    modelos = Modelo.query.all()
+    return render_template('modelos.html', modelos=modelos)
+
+@app.route('/marcas')
+def listar_marcas():
+    marcas = Marca.query.all()
+    return render_template('marcas.html', marcas=marcas)
+
+@app.route('/fabricantes')
+def listar_fabricantes():
+    fabricantes = Fabricante.query.all()
+    return render_template('fabricantes.html', fabricantes=fabricantes)
+
+@app.route('/caracteristicas')
+def listar_caracteristicas():
+    caracteristicas = Caracteristica.query.all()
+    return render_template('caracteristicas.html', caracteristicas=caracteristicas)
+
+@app.route('/stock')
+def listar_stock():
+    stock = Stock.query.all()
+    return render_template('stock.html', stock=stock)
+
+@app.route('/proveedores')
+def listar_proveedores():
+    proveedores = Proveedor.query.all()
+    return render_template('proveedores.html', proveedores=proveedores)
+
+@app.route('/accesorios')
+def listar_accesorios():
+    accesorios = Accesorio.query.all()
+    return render_template('accesorios.html', accesorios=accesorios)
 
 if __name__ == '__main__':
     app.run(debug=True)

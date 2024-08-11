@@ -18,14 +18,27 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link btn btn-warning text-dark font-weight-bold mx-1" href="/equipos">Equipos</a>
+                <!-- Menú desplegable -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle btn btn-warning text-dark font-weight-bold mx-1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Categorias
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/equipos">Equipos</a>
+                        <a class="dropdown-item" href="/modelos">Modelos</a>
+                        <a class="dropdown-item" href="/marcas">Marcas</a>
+                        <a class="dropdown-item" href="/fabricantes">Fabricantes</a>
+                        <a class="dropdown-item" href="/caracteristicas">Características</a>
+                        <a class="dropdown-item" href="/stock">Stock</a>
+                        <a class="dropdown-item" href="/proveedores">Proveedores</a>
+                        <a class="dropdown-item" href="/accesorios">Accesorios</a>
+                    </div>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div class="container  mt-4 text-withe flex-grow-1">
+    <div class="container mt-4 text-white flex-grow-1">
         {% block content %}{% endblock %}
     </div>
 
@@ -43,3 +56,4 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
+
