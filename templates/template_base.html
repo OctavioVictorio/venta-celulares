@@ -12,7 +12,7 @@
 
 <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Mi Aplicación</a>
+        <a class="navbar-brand text-warning" href="/">Mi Aplicación</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -21,28 +21,28 @@
                 <!-- Menú desplegable -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle btn btn-warning text-dark font-weight-bold mx-1" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Categorias
+                        Categorías
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/equipos">Equipos</a>
-                        <a class="dropdown-item" href="/modelos">Modelos</a>
-                        <a class="dropdown-item" href="/marcas">Marcas</a>
-                        <a class="dropdown-item" href="/fabricantes">Fabricantes</a>
-                        <a class="dropdown-item" href="/caracteristicas">Características</a>
-                        <a class="dropdown-item" href="/stock">Stock</a>
-                        <a class="dropdown-item" href="/proveedores">Proveedores</a>
-                        <a class="dropdown-item" href="/accesorios">Accesorios</a>
+                        <a class="dropdown-item text-primary" href="/equipos">Equipos</a>
+                        <a class="dropdown-item text-primary" href="/modelos">Modelos</a>
+                        <a class="dropdown-item text-primary" href="/marcas">Marcas</a>
+                        <a class="dropdown-item text-primary" href="/fabricantes">Fabricantes</a>
+                        <a class="dropdown-item text-primary" href="/caracteristicas">Características</a>
+                        <a class="dropdown-item text-primary" href="/stock">Stock</a>
+                        <a class="dropdown-item text-primary" href="/proveedores">Proveedores</a>
+                        <a class="dropdown-item text-primary" href="/accesorios">Accesorios</a>
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
 
-    <div class="container mt-4 text-white flex-grow-1">
+    <div class="container mt-4 text-light flex-grow-1">
         {% block content %}{% endblock %}
     </div>
 
-    <footer class="footer text-white py-4 mt-auto">
+    <footer class="footer bg-dark text-white py-4 mt-auto">
         <div class="container text-center">
             <span>&copy; 2024 Mi Aplicación. Desarrollado por Di Marquez-Druetta. Todos los derechos reservados.</span>
         </div>
@@ -56,4 +56,3 @@
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
-
