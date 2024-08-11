@@ -1,0 +1,8 @@
+body {
+    background-image: url('/static/img/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Asegúrate de que el contenido sea legible */
+    color: #fff; /* Ajusta el color del texto según sea necesario */
+}
