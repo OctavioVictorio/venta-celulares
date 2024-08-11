@@ -1,0 +1,12 @@
+{% extends "template_base.html" %}
+
+{% block content %}
+    <h1 class="text-black-50 font-weight-bold"Editar Fabricante</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ fabricante.nombre }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+{% endblock %}

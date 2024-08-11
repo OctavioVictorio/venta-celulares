@@ -14,7 +14,8 @@
                 <th>Costo</th>
                 <th>Stock</th>
                 <th>Marca</th>
-                <th>Acciones</th>
+                
+                
             </tr>
         </thead>
         <tbody>
@@ -26,12 +27,6 @@
                     <td>{{ equipo.costo }}</td>
                     <td>{{ equipo.stock_relacionado.cantidad }}</td>
                     <td>{{ equipo.marca_relacionado.nombre }}</td>
-                    <td>
-                        <a href="/editar_equipo/{{ equipo.id }}" class="btn btn-sm btn-primary">Editar</a>
-                        <form action="/equipo/eliminar/{{ equipo.id }}" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                        </form>
-                    </td>
                 </tr>
             {% endfor %}
         </tbody>

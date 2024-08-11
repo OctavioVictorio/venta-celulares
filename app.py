@@ -87,8 +87,6 @@ def eliminar_equipo(id):
     db.session.commit()
     return redirect(url_for('listar_equipos'))
 
-# Nuevas rutas para modelos y otros datos
-
 @app.route('/modelos')
 def listar_modelos():
     modelos = Modelo.query.all()
@@ -148,6 +146,28 @@ def listar_fabricantes():
     fabricantes = Fabricante.query.all()
     return render_template('fabricantes.html', fabricantes=fabricantes)
 
+@app.route('/fabricante/editar/<int:id>', methods=['GET', 'POST'])
+def editar_fabricante(id):
+    fabricante = Fabricante.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        try:
+            fabricante.nombre = request.form['nombre']
+            db.session.commit()
+            return redirect(url_for('listar_fabricantes'))
+        except Exception as e:
+            print(f"Error al actualizar el fabricante: {e}")
+            return render_template('editar_fabricante.html', fabricante=fabricante, error="No se pudo actualizar el fabricante. Inténtalo de nuevo.")
+    
+    return render_template('editar_fabricante.html', fabricante=fabricante)
+
+@app.route('/fabricante/eliminar/<int:id>', methods=['POST'])
+def eliminar_fabricante(id):
+    fabricante = Fabricante.query.get_or_404(id)
+    db.session.delete(fabricante)
+    db.session.commit()
+    return redirect(url_for('listar_fabricantes'))
+
 @app.route('/caracteristicas')
 def listar_caracteristicas():
     caracteristicas = Caracteristica.query.all()
@@ -168,5 +188,76 @@ def listar_accesorios():
     accesorios = Accesorio.query.all()
     return render_template('accesorios.html', accesorios=accesorios)
 
+@app.route('/modelos/<int:marca_id>')
+def modelos_por_marca(marca_id):
+    marca = Marca.query.get_or_404(marca_id)
+    modelos = Modelo.query.filter_by(marca_id=marca_id).all()
+    return render_template('modelos_por_marca.html', marca=marca, modelos=modelos)
+
+@app.route('/fabricante/nuevo', methods=['GET', 'POST'])
+def nuevo_fabricante():
+    if request.method == 'POST':
+        try:
+            nombre = request.form.get('nombre')
+            nuevo_fabricante = Fabricante(nombre=nombre)
+            db.session.add(nuevo_fabricante)
+            db.session.commit()
+            return redirect(url_for('listar_fabricantes'))
+        except Exception as e:
+            print(f"Error al agregar nuevo fabricante: {e}")
+            return render_template('nuevo_fabricante.html', error="No se pudo agregar el nuevo fabricante. Inténtalo de nuevo.")
+    
+    return render_template('nuevo_fabricante.html')
+
+@app.route('/marca/nuevo', methods=['GET', 'POST'])
+def nuevo_marca():
+    if request.method == 'POST':
+        try:
+            nombre = request.form.get('nombre')
+            nueva_marca = Marca(nombre=nombre)
+            db.session.add(nueva_marca)
+            db.session.commit()
+            return redirect(url_for('listar_marcas'))
+        except Exception as e:
+            print(f"Error al agregar nueva marca: {e}")
+            return render_template('nuevo_marca.html', error="No se pudo agregar la nueva marca. Inténtalo de nuevo.")
+    
+    return render_template('nuevo_marca.html')
+
+@app.route('/modelo/nuevo', methods=['GET', 'POST'])
+def nuevo_modelo():
+    if request.method == 'POST':
+        try:
+            nombre = request.form.get('nombre')
+            fabricante_id = request.form.get('fabricante_id')
+            marca_id = request.form.get('marca_id')
+
+            if fabricante_id:
+                fabricante_id = int(fabricante_id)
+            else:
+                fabricante_id = None
+
+            if marca_id:
+                marca_id = int(marca_id)
+            else:
+                marca_id = None
+
+            nuevo_modelo = Modelo(
+                nombre=nombre,
+                fabricante_id=fabricante_id,
+                marca_id=marca_id
+            )
+            db.session.add(nuevo_modelo)
+            db.session.commit()
+            return redirect(url_for('listar_modelos'))
+        except Exception as e:
+            print(f"Error al agregar nuevo modelo: {e}")
+            return render_template('nuevo_modelo.html', error="No se pudo agregar el nuevo modelo. Inténtalo de nuevo.")
+
+    fabricantes = Fabricante.query.all()
+    marcas = Marca.query.all()
+    return render_template('nuevo_modelo.html', fabricantes=fabricantes, marcas=marcas)
+
 if __name__ == '__main__':
     app.run(debug=True)
+

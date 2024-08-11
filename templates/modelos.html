@@ -5,6 +5,11 @@
 {% block content %}
     <h1 class="text-black-50 font-weight-bold">Modelos</h1>
     <p class="text-secondary font-weight-bold">Gestiona los modelos en el sistema.</p>
+    
+    <!-- Botón para agregar un nuevo modelo -->
+    <a href="{{ url_for('nuevo_modelo') }}" class="btn btn-primary mb-3">Agregar Modelo</a>
+    
+    <!-- Tabla para mostrar los modelos -->
     <table class="table table-striped">
         <thead>
             <tr>

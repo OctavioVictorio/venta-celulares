@@ -1,0 +1,42 @@
+{% extends "template_base.html" %}
+
+{% block title %}Agregar Modelo{% endblock %}
+
+{% block content %}
+    <h1 class="text-black-50 font-weight-bold">Agregar Modelo</h1>
+
+    <form action="{{ url_for('nuevo_modelo') }}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="fabricante_id">Fabricante:</label>
+            <select id="fabricante_id" name="fabricante_id" class="form-control" required>
+                <option value="">Seleccionar Fabricante</option>
+                {% for fabricante in fabricantes %}
+                    <option value="{{ fabricante.id }}">{{ fabricante.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="marca_id">Marca:</label>
+            <select id="marca_id" name="marca_id" class="form-control" required>
+                <option value="">Seleccionar Marca</option>
+                {% for marca in marcas %}
+                    <option value="{{ marca.id }}">{{ marca.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Agregar Modelo</button>
+    </form>
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">
+            {{ error }}
+        </div>
+    {% endif %}
+{% endblock %}

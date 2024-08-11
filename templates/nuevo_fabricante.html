@@ -1,0 +1,19 @@
+{% extends "template_base.html" %}
+
+{% block content %}
+    <h1 class="text-black-50 font-weight-bold">Agregar Fabricante</h1>
+
+    <form action="{{ url_for('nuevo_fabricante') }}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar Fabricante</button>
+    </form>
+
+    {% if error %}
+        <div class="alert alert-danger mt-3">
+            {{ error }}
+        </div>
+    {% endif %}
+{% endblock %}

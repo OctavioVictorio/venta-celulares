@@ -7,30 +7,21 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Nombre</th>
                 <th>Modelo</th>
                 <th>Categoria</th>
                 <th>Marca</th>
                 <th>Costo</th>
                 <th>Stock</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             {% for equipo in equipos %}
                 <tr>
-                    <td>{{ equipo.nombre }}</td>
                     <td>{{ equipo.modelo_relacionado.nombre }}</td>
                     <td>{{ equipo.categoria_relacionado.nombre }}</td>
                     <td>{{ equipo.marca_relacionado.nombre }}</td>
                     <td>{{ equipo.costo }}</td>
                     <td>{{ equipo.stock_relacionado.cantidad }}</td>
-                    <td>
-                        <a href="{{ url_for('editar_equipo', id=equipo.id) }}">Editar</a>
-                        <form action="/equipo_eliminar/{{ equipo.id }}" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                        </form>
-                    </td>
                 </tr>
             {% endfor %}
         </tbody>

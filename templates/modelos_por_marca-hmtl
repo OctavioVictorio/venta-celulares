@@ -1,0 +1,29 @@
+{% extends "template_base.html" %}
+
+{% block title %}Modelos de {{ marca.nombre }}{% endblock %}
+
+{% block content %}
+    <h1 class="text-black-50 font-weight-bold">Modelos de {{ marca.nombre }}</h1>
+    
+    <!-- Tabla para mostrar los modelos -->
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for modelo in modelos %}
+            <tr>
+                <td>{{ modelo.id }}</td>
+                <td>{{ modelo.nombre }}</td>
+                <td>
+                    <!-- Aquí puedes agregar botones para editar o eliminar los modelos si es necesario -->
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
