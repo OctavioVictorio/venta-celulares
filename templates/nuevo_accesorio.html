@@ -1,0 +1,13 @@
+{% extends "template_base.html" %}
+
+{% block content %}
+    <h1 class="text-black-50 font-weight-bold">Agregar Nuevo Accesorio</h1>
+    
+    <form action="{{ url_for('nuevo_accesorio') }}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre del Accesorio:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Agregar</button>
+    </form>
+{% endblock %}
