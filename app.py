@@ -88,15 +88,60 @@ def eliminar_equipo(id):
     return redirect(url_for('listar_equipos'))
 
 # Nuevas rutas para modelos y otros datos
+
 @app.route('/modelos')
 def listar_modelos():
     modelos = Modelo.query.all()
     return render_template('modelos.html', modelos=modelos)
 
+@app.route('/modelo/editar/<int:id>', methods=['GET', 'POST'])
+def editar_modelo(id):
+    modelo = Modelo.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        try:
+            modelo.nombre = request.form['nombre']
+            db.session.commit()
+            return redirect(url_for('listar_modelos'))
+        except Exception as e:
+            print(f"Error al actualizar el modelo: {e}")
+            return render_template('editar_modelo.html', modelo=modelo, error="No se pudo actualizar el modelo. Inténtalo de nuevo.")
+    
+    return render_template('editar_modelo.html', modelo=modelo)
+
+@app.route('/modelo/eliminar/<int:id>', methods=['POST'])
+def eliminar_modelo(id):
+    modelo = Modelo.query.get_or_404(id)
+    db.session.delete(modelo)
+    db.session.commit()
+    return redirect(url_for('listar_modelos'))
+
 @app.route('/marcas')
 def listar_marcas():
     marcas = Marca.query.all()
     return render_template('marcas.html', marcas=marcas)
+
+@app.route('/marca/editar/<int:id>', methods=['GET', 'POST'])
+def editar_marca(id):
+    marca = Marca.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        try:
+            marca.nombre = request.form['nombre']
+            db.session.commit()
+            return redirect(url_for('listar_marcas'))
+        except Exception as e:
+            print(f"Error al actualizar la marca: {e}")
+            return render_template('editar_marca.html', marca=marca, error="No se pudo actualizar la marca. Inténtalo de nuevo.")
+    
+    return render_template('editar_marca.html', marca=marca)
+
+@app.route('/marca/eliminar/<int:id>', methods=['POST'])
+def eliminar_marca(id):
+    marca = Marca.query.get_or_404(id)
+    db.session.delete(marca)
+    db.session.commit()
+    return redirect(url_for('listar_marcas'))
 
 @app.route('/fabricantes')
 def listar_fabricantes():

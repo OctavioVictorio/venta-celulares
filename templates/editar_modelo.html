@@ -1,0 +1,19 @@
+{% extends "template_base.html" %}
+
+{% block title %}Editar Modelo{% endblock %}
+
+{% block content %}
+    <h1 class="text-black-50 font-weight-bold">Editar Modelo</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ modelo.nombre }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+    </form>
+    {% if error %}
+        <div class="alert alert-danger mt-3">
+            {{ error }}
+        </div>
+    {% endif %}
+{% endblock %}

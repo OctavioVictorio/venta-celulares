@@ -3,7 +3,29 @@
 {% block title %}Modelos{% endblock %}
 
 {% block content %}
-    <h1 class="text-black-50">Modelos</h1>
-    <p class="text-secondary">Gestiona los modelos en el sistema.</p>
-    <!-- Aquí puedes agregar formularios, tablas u otros elementos para manejar los accesorios -->
+    <h1 class="text-black-50 font-weight-bold">Modelos</h1>
+    <p class="text-secondary font-weight-bold">Gestiona los modelos en el sistema.</p>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for modelo in modelos %}
+            <tr>
+                <td>{{ modelo.id }}</td>
+                <td>{{ modelo.nombre }}</td>
+                <td>
+                    <a href="{{ url_for('editar_modelo', id=modelo.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ url_for('eliminar_modelo', id=modelo.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
