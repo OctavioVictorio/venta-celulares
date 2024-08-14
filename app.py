@@ -1,13 +1,19 @@
+import os
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from forms import MarcaForm
 
+# Configura la base de datos
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/venta_celulares'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.urandom(24)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+
 
 # Importa los modelos necesarios
 from models import Equipo, Modelo, Marca, Fabricante, Caracteristica, Stock, Proveedor, Accesorio, Categoria
@@ -114,10 +120,25 @@ def eliminar_modelo(id):
     db.session.commit()
     return redirect(url_for('listar_modelos'))
 
-@app.route('/marcas')
-def listar_marcas():
+@app.route('/marcas', methods=['GET', 'POST'])
+def marcas():
+    formulario = MarcaForm()
+    
+    if request.method == 'POST' and formulario.validate_on_submit():
+        nombre = formulario.nombre.data
+        nueva_marca = Marca(nombre=nombre)
+        db.session.add(nueva_marca)
+        db.session.commit()
+        return redirect(url_for('marcas'))
+    
     marcas = Marca.query.all()
-    return render_template('marcas.html', marcas=marcas)
+    
+    return render_template(
+        'marcas.html',
+        marcas=marcas,
+        formulario=formulario    
+    )
+
 
 @app.route('/marca/editar/<int:id>', methods=['GET', 'POST'])
 def editar_marca(id):
