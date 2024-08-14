@@ -6,3 +6,29 @@ body {
     /* Asegúrate de que el contenido sea legible */
     color: #fff; /* Ajusta el color del texto según sea necesario */
 }
+html, body {
+    height: 100%;
+}
+
+
+
+header {
+    position: fixed;
+    top: 0;  
+    left: 0;
+    width: 100%;
+    z-index: 1000; 
+    
+}
+main {
+    flex: 1;
+    margin-top: 100px;
+    padding-bottom: 60px; 
+}
+
+footer{
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
