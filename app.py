@@ -1,11 +1,17 @@
 import os
+
 from flask import Flask, render_template, request, redirect, url_for
+
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from forms import MarcaForm
 
-# Configura la base de datos
+from forms import MarcaForm
+from repositories.marca_repository import MarcaRepository
+
+
 app = Flask(__name__)
+
+#configuracion de SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/venta_celulares'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -17,7 +23,7 @@ migrate = Migrate(app, db)
 
 # Importa los modelos necesarios
 from models import Equipo, Modelo, Marca, Fabricante, Caracteristica, Stock, Proveedor, Accesorio, Categoria
-
+from services.marca_service import MarcaService
 @app.route('/')
 def index():
     equipos = Equipo.query.all()
@@ -124,11 +130,12 @@ def eliminar_modelo(id):
 def marcas():
     formulario = MarcaForm()
     
+    services = MarcaService(MarcaRepository())
+    marcas = services.get_all()
+    
     if request.method == 'POST' and formulario.validate_on_submit():
         nombre = formulario.nombre.data
-        nueva_marca = Marca(nombre=nombre)
-        db.session.add(nueva_marca)
-        db.session.commit()
+        services.create(nombre=nombre)
         return redirect(url_for('marcas'))
     
     marcas = Marca.query.all()
@@ -148,7 +155,7 @@ def editar_marca(id):
         try:
             marca.nombre = request.form['nombre']
             db.session.commit()
-            return redirect(url_for('listar_marcas'))
+            return redirect(url_for('marcas'))
         except Exception as e:
             print(f"Error al actualizar la marca: {e}")
             return render_template('editar_marca.html', marca=marca, error="No se pudo actualizar la marca. Inténtalo de nuevo.")
@@ -160,7 +167,7 @@ def eliminar_marca(id):
     marca = Marca.query.get_or_404(id)
     db.session.delete(marca)
     db.session.commit()
-    return redirect(url_for('listar_marcas'))
+    return redirect(url_for('marcas'))
 
 @app.route('/fabricantes')
 def listar_fabricantes():
@@ -238,7 +245,7 @@ def nuevo_marca():
             nueva_marca = Marca(nombre=nombre)
             db.session.add(nueva_marca)
             db.session.commit()
-            return redirect(url_for('listar_marcas'))
+            return redirect(url_for('marcas'))
         except Exception as e:
             print(f"Error al agregar nueva marca: {e}")
             return render_template('nuevo_marca.html', error="No se pudo agregar la nueva marca. Inténtalo de nuevo.")
