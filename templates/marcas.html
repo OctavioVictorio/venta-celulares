@@ -25,10 +25,6 @@
                 <td>{{ marca.nombre }}</td>
                 <td>
                     <a href="{{ url_for('editar_marca', id=marca.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                    <form action="{{ url_for('eliminar_marca', id=marca.id) }}" method="post" style="display:inline;">
-                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
-                    </form>
-                    <a href="{{ url_for('modelos_por_marca', marca_id=marca.id) }}" class="btn btn-info btn-sm">Modelos</a>
                 </td>
             </tr>
             {% endfor %}

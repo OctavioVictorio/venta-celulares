@@ -4,6 +4,28 @@
 
 {% block content %}
     <h1 class="text-black-50 font-weight-bold">Características</h1>
-    <p class="text-secondary font-weight-bold">Gestiona las características en el sistema.</p>
-    <!-- Aquí puedes agregar formularios, tablas u otros elementos para manejar las características -->
+    <p class="text-secondary font-weight-bold">Gestiona las características del equipo en el sistema.</p>
+    
+    <a href="{{ url_for('agregar_caracteristica') }}" class="btn btn-primary mb-3">Agregar Característica</a>
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for caracteristica in caracteristicas %}
+            <tr>
+                <td>{{ caracteristica.tipo }}</td>
+                <td>{{ caracteristica.descripcion }}</td>
+                <td>
+                    <a href="{{ url_for('editar_caracteristica', id=caracteristica.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

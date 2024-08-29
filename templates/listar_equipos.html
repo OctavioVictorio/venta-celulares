@@ -3,31 +3,45 @@
 {% block title %}Listar Equipos{% endblock %}
 
 {% block content %}
-    <h1 class="text-black-50 font-weight-bold">Listado de Equipos</h1>
-    <a href="/equipo/nuevo" class="btn btn-success mb-3">Agregar Nuevo Equipo</a>
-    <table class="table table-striped">
-        <thead>
+<h1 class="text-black-50 font-weight-bold">Listado de Equipos</h1>
+<a href="{{ url_for('nuevo_equipo') }}" class="btn btn-success mb-3">Agregar Nuevo Equipo</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Modelo</th>
+            <th>Categoría</th>
+            <th>Costo</th>
+            <th>Stock</th>
+            <th>Marca</th>
+            <th>Características</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for equipo in equipos %}
             <tr>
-                <th>Nombre</th>
-                <th>Modelo</th>
-                <th>Categoría</th>
-                <th>Costo</th>
-                <th>Stock</th>
-                <th>Marca</th>
-                
-                
+                <td>{{ equipo.nombre }}</td>
+                <td>{{ equipo.modelo_relacionado.nombre }}</td>
+                <td>{{ equipo.categoria_relacionado.nombre }}</td>
+                <td>{{ equipo.costo }}</td>
+                <td>{{ equipo.stock_relacionado.cantidad }}</td>
+                <td>{{ equipo.marca_relacionado.nombre }}</td>
+                <td>
+                    <!-- Listar las características asociadas -->
+                    {% for caracteristica in equipo.caracteristicas %}
+                        <span class="badge badge-info">{{ caracteristica.nombre }}</span>
+                    {% endfor %}
+                </td>
+                <td>
+                    <!-- Botón para eliminar -->
+                    <form action="{{ url_for('eliminar_equipo', id=equipo.id) }}" method="post" style="display:inline;">
+                        <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('¿Estás seguro de que quieres eliminar este equipo?');">Eliminar</button>
+                    </form>
+                    <!-- Botón para editar -->
+                    <a href="{{ url_for('editar_equipo', id=equipo.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            {% for equipo in equipos %}
-                <tr>
-                    <td>{{ equipo.nombre }}</td>
-                    <td>{{ equipo.modelo_relacionado.nombre }}</td>
-                    <td>{{ equipo.categoria_relacionado.nombre }}</td>
-                    <td>{{ equipo.costo }}</td>
-                    <td>{{ equipo.stock_relacionado.cantidad }}</td>
-                    <td>{{ equipo.marca_relacionado.nombre }}</td>
-                </tr>
             {% endfor %}
         </tbody>
     </table>

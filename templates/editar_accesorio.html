@@ -5,8 +5,22 @@
     
     <form action="{{ url_for('editar_accesorio', id=accesorio.id) }}" method="post">
         <div class="form-group">
-            <label for="nombre">Nombre del Accesorio:</label>
-            <input type="text" id="nombre" name="nombre" class="form-control" value="{{ accesorio.nombre }}" required>
+            <label for="tipo">Tipo:</label>
+            <input type="text" id="tipo" name="tipo" class="form-control" value="{{ accesorio.tipo }}" required>
+        </div>
+        <div class="form-group">
+            <label for="compatible_con">Compatibilidad:</label>
+            <input type="text" id="compatible_con" name="compatible_con" class="form-control" value="{{ accesorio.compatible_con }}">
+        </div>
+        <div class="form-group">
+            <label for="proveedor">Proveedor:</label>
+            <select id="proveedor" name="proveedor" class="form-control" required>
+                {% for proveedor in proveedores %}
+                    <option value="{{ proveedor.id }}" {% if proveedor.id == accesorio.proveedor_id %}selected{% endif %}>
+                        {{ proveedor.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
         </div>
         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     </form>

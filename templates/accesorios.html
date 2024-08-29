@@ -4,6 +4,32 @@
 
 {% block content %}
     <h1 class="text-black-50 font-weight-bold">Accesorios</h1>
-    <p class="text-secondary font-weight-bold">Gestiona los accesorios en el sistema.</p>
-    <!-- Aquí puedes agregar formularios, tablas u otros elementos para manejar los accesorios -->
+    <p class="text-secondary font-weight-bold">Gestiona los Accesorios en el sistema.</p>
+
+    <a href="{{ url_for('nuevo_accesorio') }}" class="btn btn-primary mb-3">Agregar Accesorio</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tipo</th>
+                <th>Compatibilidad</th>
+                <th>Proveedor</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for accesorio in accesorios %}
+            <tr>
+                <td>{{ accesorio.id }}</td>
+                <td>{{ accesorio.tipo }}</td>
+                <td>{{ accesorio.compatible_con }}</td>
+                <td>{{ accesorio.proveedor.nombre }}</td> 
+                <td>
+                    <a href="{{ url_for('editar_accesorio', id=accesorio.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

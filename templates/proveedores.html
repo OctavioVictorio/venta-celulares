@@ -1,9 +1,33 @@
 {% extends "template_base.html" %}
 
-{% block title %}Proveedores{% endblock %}
+{% block title %}Proveedor{% endblock %}
 
 {% block content %}
-    <h1 class="text-black-50 font-weight-bold">Proveedores</h1>
+    <h1 class="text-black-50 font-weight-bold">Provedores</h1>
     <p class="text-secondary font-weight-bold">Gestiona los proveedores en el sistema.</p>
-    <!-- Aquí puedes agregar formularios, tablas u otros elementos para manejar los proveedores -->
+
+    <a href="{{ url_for('nuevo_proveedor') }}" class="btn btn-primary mb-3">Agregar Provedores</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Contacto</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proveedor in proveedores %}
+            <tr>
+                <td>{{ proveedor.id }}</td>
+                <td>{{ proveedor.nombre }}</td>
+                <td>{{ proveedor.contacto }}</td>
+                <td>
+                    <a href="{{ url_for('editar_proveedor', id=proveedor.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
