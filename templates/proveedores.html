@@ -6,7 +6,7 @@
     <h1 class="text-black-50 font-weight-bold">Provedores</h1>
     <p class="text-secondary font-weight-bold">Gestiona los proveedores en el sistema.</p>
 
-    <a href="{{ url_for('nuevo_proveedor') }}" class="btn btn-primary mb-3">Agregar Provedores</a>
+    <a href="{{ url_for('proveedor.nuevo_proveedor') }}" class="btn btn-primary mb-3">Agregar Provedores</a>
 
     <table class="table table-striped">
         <thead>
@@ -24,7 +24,7 @@
                 <td>{{ proveedor.nombre }}</td>
                 <td>{{ proveedor.contacto }}</td>
                 <td>
-                    <a href="{{ url_for('editar_proveedor', id=proveedor.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{{ url_for('proveedor.editar_proveedor', id=proveedor.id) }}" class="btn btn-warning btn-sm">Editar</a>
                 </td>
             </tr>
             {% endfor %}

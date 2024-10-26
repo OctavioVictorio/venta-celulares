@@ -7,7 +7,7 @@
     <p class="text-secondary font-weight-bold">Gestiona los modelos en el sistema.</p>
     
     <!-- Botón para agregar un nuevo modelo -->
-    <a href="{{ url_for('nuevo_modelo') }}" class="btn btn-primary mb-3">Agregar Modelo</a>
+    <a href="{{ url_for('modelo.nuevo_modelo') }}" class="btn btn-primary mb-3">Agregar Modelo</a>
     
     <!-- Tabla para mostrar los modelos -->
     <table class="table table-striped">
@@ -24,7 +24,7 @@
                 <td>{{ modelo.id }}</td>
                 <td>{{ modelo.nombre }}</td>
                 <td>
-                    <a href="{{ url_for('editar_modelo', id=modelo.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{{ url_for('modelo.editar_modelo', id=modelo.id) }}" class="btn btn-warning btn-sm">Editar</a>
                 </td>
             </tr>
             {% endfor %}

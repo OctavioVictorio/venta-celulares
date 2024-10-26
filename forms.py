@@ -5,6 +5,3 @@ class MarcaForm(FlaskForm):
         nombre = StringField('Nombre')
         submit = SubmitField('Guardar')
         
-
-
-    

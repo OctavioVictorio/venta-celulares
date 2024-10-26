@@ -3,7 +3,14 @@ from app import db  # Importar la instancia de db desde app.py
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password_hash = db.Column(db.String(300), nullable=False)
+    is_admin = db.Column(db.Boolean)
+    def to_dict(self):          #metodo para que devuelva el objeto(usuario) como un diccionario
+        return dict(
+            username = self.username,
+            password = self.password_hash
+        )
+    
 
 class Equipo(db.Model):
     __tablename__ = 'equipo'
@@ -22,6 +29,18 @@ class Equipo(db.Model):
 
     accesorios = db.relationship('Accesorio', secondary='equipo_accesorio', backref=db.backref('equipos_accesorio', lazy=True))
     caracteristicas_relacionadas = db.relationship('Caracteristica', backref='equipo_relacionado', lazy=True)  
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "modelo": self.modelo_relacionado.nombre,
+            "categoria": self.categoria_relacionado.nombre,
+            "costo": self.costo,
+            "marca": self.marca_relacionado.nombre,
+            "stock": self.stock_relacionado.cantidad
+        }
+ 
 
 class Fabricante(db.Model):
     __tablename__ = 'fabricante'
@@ -52,6 +71,14 @@ class Caracteristica(db.Model):
 
     equipo = db.relationship('Equipo', backref=db.backref('caracteristicas', lazy=True))
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "tipo": self.tipo,
+            "descripcion": self.descripcion,
+            "equipo_id": self.equipo_id
+        }
+
 class Proveedor(db.Model):
     __tablename__ = 'proveedor'
     id = db.Column(db.Integer, primary_key=True)
@@ -59,6 +86,13 @@ class Proveedor(db.Model):
     contacto = db.Column(db.String(50))
 
     accesorios = db.relationship('Accesorio', backref='proveedor_relacionado', lazy=True)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "nombre": self.nombre,
+            "contacto": self.contacto
+        }
 
 class Accesorio(db.Model):
     __tablename__ = 'accesorio'
@@ -68,6 +102,14 @@ class Accesorio(db.Model):
     proveedor_id = db.Column(db.Integer, db.ForeignKey('proveedor.id'), nullable=False)
 
     proveedor = db.relationship('Proveedor', backref=db.backref('accesorios_relacionado', lazy=True))
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "tipo": self.tipo,
+            "compatible_con": self.compatible_con,
+            "proveedor": self.proveedor.nombre
+        }
 
 class EquipoAccesorio(db.Model):
     __tablename__ = 'equipo_accesorio'
@@ -82,8 +124,20 @@ class Categoria(db.Model):
     __tablename__ = 'categoria'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(50), nullable=False)
+    
 class Stock(db.Model):
     __tablename__ = 'stock'
     id = db.Column(db.Integer, primary_key=True)
     cantidad = db.Column(db.Integer, nullable=False)
     ubicacion = db.Column(db.String(50))
+
+    def actualizar_stock(self, cantidad_nueva):
+        self.cantidad = cantidad_nueva
+        db.session.commit()
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "cantidad": self.cantidad,
+            "ubicacion": self.ubicacion
+        }

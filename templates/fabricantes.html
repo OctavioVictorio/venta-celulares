@@ -1,9 +1,11 @@
 {% extends "template_base.html" %}
 
+{% block title %}Fabricantes{% endblock %}
+
 {% block content %}
     <h1 class="text-black-50 font-weight-bold">Fabricantes</h1>
     
-    <a href="{{ url_for('nuevo_fabricante') }}" class="btn btn-primary mb-3">Agregar Fabricante</a>
+    <a href="{{ url_for('fabricante.nuevo_fabricante') }}" class="btn btn-primary mb-3">Agregar Fabricante</a>
     
     <table class="table">
         <thead>
@@ -19,8 +21,8 @@
                 <td>{{ fabricante.id }}</td>
                 <td>{{ fabricante.nombre }}</td>
                 <td>
-                    <a href="{{ url_for('editar_fabricante', id=fabricante.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                    <form action="{{ url_for('eliminar_fabricante', id=fabricante.id) }}" method="post" style="display:inline;">
+                    <a href="{{ url_for('fabricante.editar_fabricante', id=fabricante.id) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="{{ url_for('fabricante.eliminar_fabricante', id=fabricante.id) }}" method="post" style="display:inline;">
                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                     </form>
                 </td>

@@ -3,7 +3,7 @@
 {% block content %}
     <h1 class="text-black-50 font-weight-bold">Editar Accesorio</h1>
     
-    <form action="{{ url_for('editar_accesorio', id=accesorio.id) }}" method="post">
+    <form action="{{ url_for('accesorio.editar_accesorio', id=accesorio.id) }}" method="post">
         <div class="form-group">
             <label for="tipo">Tipo:</label>
             <input type="text" id="tipo" name="tipo" class="form-control" value="{{ accesorio.tipo }}" required>
