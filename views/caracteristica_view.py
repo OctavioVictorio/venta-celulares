@@ -1,10 +1,12 @@
 from flask import Blueprint, request, make_response, jsonify, render_template, redirect, url_for
 
 from app import db
-from models import Equipo, Modelo, Categoria, Marca, Stock, Fabricante, Caracteristica, Proveedor, Accesorio, EquipoAccesorio
-
+from models import Caracteristica, Equipo 
 from schemas import CaracteristicaSchema
-
+from flask_jwt_extended import(
+    jwt_required,               #para saber si el usuario esta autenticado
+    get_jwt,                    #para saber si el usuario es admin
+)
 caracteristica_bp = Blueprint('caracteristica', __name__)
 
 # Rutas para Características
@@ -18,7 +20,13 @@ def listar_caracteristicas():
 
 
 @caracteristica_bp.route('/caracteristicas/nuevo', methods=['GET', 'POST'])
+@jwt_required()
 def agregar_caracteristica():
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder agregar nueva característica")
     # Código para agregar una característica
     if request.method == 'POST':
         try:
@@ -38,7 +46,13 @@ def agregar_caracteristica():
     return render_template('agregar_caracteristicas.html', equipos=equipos)
 
 @caracteristica_bp.route('/caracteristicas/<int:id>/editar', methods=['GET', 'POST'])
+@jwt_required()
 def editar_caracteristica(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder editar una característica")
     # Código para editar una característica
     caracteristica = Caracteristica.query.get_or_404(id)
 

@@ -1,8 +1,11 @@
 from flask import Blueprint, request, make_response, jsonify, render_template, redirect, url_for
 
 from app import db
-from models import Marca, Modelo, Categoria, Marca, Stock
-
+from models import Marca
+from flask_jwt_extended import(
+    jwt_required,               #para saber si el usuario esta autenticado
+    get_jwt,                    #para saber si el usuario es admin
+)
 from schemas import MarcaSchema
 
 from forms import MarcaForm
@@ -35,7 +38,14 @@ def marcas():
     )
 
 @marca_bp.route('/marca/editar/<int:id>', methods=['GET', 'POST'])
+@jwt_required()
 def editar_marca(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder editar una marca")
+    
     # Código para editar una marca existente
     marca = Marca.query.get_or_404(id)
     
@@ -52,7 +62,14 @@ def editar_marca(id):
 
 
 @marca_bp.route('/marca/nuevo', methods=['GET', 'POST'])
+@jwt_required()
 def nuevo_marca():
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder agregar nuevo marca")
+    
     # Código para agregar una nueva marca
     if request.method == 'POST':
         try:

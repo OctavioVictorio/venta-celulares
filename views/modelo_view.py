@@ -1,10 +1,12 @@
 from flask import Blueprint, request, make_response, jsonify, render_template, redirect, url_for
 
 from app import db
-from models import Equipo, Modelo, Categoria, Marca, Stock, Fabricante, Caracteristica, Proveedor, Accesorio, EquipoAccesorio
-
+from models import Fabricante, Modelo, Marca
 from schemas import ModeloSchema
-
+from flask_jwt_extended import(
+    jwt_required,               #para saber si el usuario esta autenticado
+    get_jwt,                    #para saber si el usuario es admin
+)
 modelo_bp = Blueprint('modelo', __name__)
 # Rutas para Modelos
 @modelo_bp.route('/modelos/<int:marca_id>')
@@ -20,7 +22,14 @@ def listar_modelos():
     return render_template('modelos.html', modelos=modelos)
 
 @modelo_bp.route('/modelo/nuevo', methods=['GET', 'POST'])
+@jwt_required()
 def nuevo_modelo():
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder agregar nuevo modelo")
+    
     # Código para agregar un nuevo modelo
     if request.method == 'POST':
         try:
@@ -55,7 +64,14 @@ def nuevo_modelo():
     return render_template('nuevo_modelo.html', fabricantes=fabricantes, marcas=marcas)
 
 @modelo_bp.route('/modelo/editar/<int:id>', methods=['GET', 'POST'])
+@jwt_required()
 def editar_modelo(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder editar un modelo")
+    
     # Código para editar un modelo existente
     modelo = Modelo.query.get_or_404(id)
     

@@ -1,10 +1,12 @@
 from flask import Blueprint, request, make_response, jsonify, render_template, redirect, url_for
 
 from app import db
-from models import Equipo, Modelo, Categoria, Marca, Stock, Fabricante, Caracteristica, Proveedor, Accesorio, EquipoAccesorio
-
+from models import Proveedor
 from schemas import ProveedorSchema
-
+from flask_jwt_extended import(
+    jwt_required,               #para saber si el usuario esta autenticado
+    get_jwt,                    #para saber si el usuario es admin
+)
 proveedor_bp = Blueprint('proveedor', __name__)
 
 # Rutas para Proveedores
@@ -15,7 +17,14 @@ def listar_proveedores():
     return render_template('proveedores.html', proveedores=proveedores)
 
 @proveedor_bp.route('/proveedores/nuevo', methods=['GET', 'POST'])
+@jwt_required()
 def nuevo_proveedor():
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder agregar nuevo proveedor")
+    
     # Código para agregar un nuevo proveedor
     if request.method == 'POST':
         try:
@@ -33,7 +42,14 @@ def nuevo_proveedor():
     return render_template('nuevo_proveedores.html')
 
 @proveedor_bp.route('/proveedores/editar/<int:id>', methods=['GET', 'POST'])
+@jwt_required()
 def editar_proveedor(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder editar un proveedor")
+    
     # Código para editar un proveedor existente
     proveedor = Proveedor.query.get_or_404(id)
     

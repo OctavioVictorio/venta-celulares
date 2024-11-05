@@ -1,9 +1,14 @@
-from flask import Blueprint, request, make_response, jsonify, render_template, redirect, url_for
+from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 
 from app import db
-from models import Equipo, Modelo, Categoria, Marca, Stock, Fabricante, Caracteristica, Proveedor, Accesorio, EquipoAccesorio
+from models import Accesorio, Proveedor
 
 from schemas import AccesorioSchema
+
+from flask_jwt_extended import(
+    jwt_required,               #para saber si el usuario esta autenticado
+    get_jwt,                    #para saber si el usuario es admin
+)
 
 accesorio_bp = Blueprint('accesorio', __name__)
 
@@ -16,7 +21,13 @@ def listar_accesorios():
     return render_template('accesorios.html', accesorios=accesorios)
 
 @accesorio_bp.route('/accesorios/nuevo', methods=['GET', 'POST'])
+@jwt_required()
 def nuevo_accesorio():
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder agregar nuevo accesorio")
     # Código para agregar un accesorio
     proveedores = Proveedor.query.all()  # Obtener todos los proveedores de la base de datos
 
@@ -38,7 +49,14 @@ def nuevo_accesorio():
     return render_template('nuevo_accesorio.html', proveedores=proveedores)
 
 @accesorio_bp.route('/editar_accesorio/<int:id>', methods=['GET', 'POST'])
+@jwt_required()
 def editar_accesorio(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder editar un accesorio")
+    
     accesorio = Accesorio.query.get_or_404(id)
     proveedores = Proveedor.query.all()
 

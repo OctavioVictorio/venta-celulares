@@ -1,20 +1,31 @@
-from flask import Blueprint, request, make_response, jsonify, render_template, redirect, url_for
+from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 
 from app import db
-from models import Equipo, Modelo, Categoria, Marca, Stock
+from models import Categoria, Equipo, Modelo, Marca, Stock
 
 from schemas import EquipoSchema
+
+from flask_jwt_extended import(
+    jwt_required,               #para saber si el usuario esta autenticado
+    get_jwt,                    #para saber si el usuario es admin
+)
 
 equipo_bp = Blueprint('equipo', __name__)
 
 # Rutas para Equipos
-@equipo_bp.route('/equipos')
+@equipo_bp.route('/equipos', methods=['GET'])
 def listar_equipos():
     equipos = Equipo.query.all()
     return render_template('listar_equipos.html', equipos=equipos)
-
 @equipo_bp.route('/equipo/nuevo', methods=['GET', 'POST'])
+@jwt_required()
 def nuevo_equipo():
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder agregar nuevo equipo")
+    
     if request.method == 'GET':
         modelos = Modelo.query.all()
         categorias = Categoria.query.all()
@@ -50,8 +61,16 @@ def nuevo_equipo():
         except Exception as e:
             print(f"Error al agregar nuevo equipo: {e}")
             return render_template('nuevo_equipo.html', error="No se pudo agregar el nuevo equipo. Inténtalo de nuevo.")
+        
 @equipo_bp.route('/editar_equipo/<int:id>', methods=['GET', 'POST'])
+@jwt_required()
 def editar_equipo(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder editar un equipo")
+    
     # Código para editar un equipo existente
     equipo = Equipo.query.get_or_404(id)
     modelos = Modelo.query.all()
@@ -77,7 +96,14 @@ def editar_equipo(id):
     return render_template('editar_equipo.html', equipo=equipo, modelos=modelos, categorias=categorias, marcas=marcas, stocks=stocks)
 
 @equipo_bp.route('/equipo/eliminar/<int:id>', methods=['POST'])
+@jwt_required()
 def eliminar_equipo(id):
+    additional_data = get_jwt()
+    administrador = additional_data['administrador']
+
+    if administrador is False:
+        return jsonify(Mensaje="Debes ser admin para poder eliminar un equipo")
+    
     # Código para eliminar un equipo
     equipo = Equipo.query.get_or_404(id)
     db.session.delete(equipo)

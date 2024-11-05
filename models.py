@@ -27,8 +27,8 @@ class Equipo(db.Model):
     stock_relacionado = db.relationship('Stock', backref=db.backref('equipos_stock', lazy=True))
     marca_relacionado = db.relationship('Marca', backref=db.backref('equipos_marca', lazy=True))
 
-    accesorios = db.relationship('Accesorio', secondary='equipo_accesorio', backref=db.backref('equipos_accesorio', lazy=True))
-    caracteristicas_relacionadas = db.relationship('Caracteristica', backref='equipo_relacionado', lazy=True)  
+    accesorios = db.relationship('Accesorio', secondary='equipo_accesorio', backref=db.backref('equipos_accesorio', lazy=True), overlaps="equipo_relacionado")
+    caracteristicas_relacionadas = db.relationship('Caracteristica', backref='equipo_relacionado', lazy=True, overlaps="caracteristicas, equipo")  
 
     def to_dict(self):
         return {
@@ -40,7 +40,6 @@ class Equipo(db.Model):
             "marca": self.marca_relacionado.nombre,
             "stock": self.stock_relacionado.cantidad
         }
- 
 
 class Fabricante(db.Model):
     __tablename__ = 'fabricante'
@@ -69,7 +68,7 @@ class Caracteristica(db.Model):
     descripcion = db.Column(db.String(120), nullable=False)
     equipo_id = db.Column(db.Integer, db.ForeignKey('equipo.id'), nullable=False) 
 
-    equipo = db.relationship('Equipo', backref=db.backref('caracteristicas', lazy=True))
+    equipo = db.relationship('Equipo', backref=db.backref('caracteristicas', lazy=True), overlaps="equipo_relacionado, caracteristicas_relacionadas")
 
     def to_dict(self):
         return {
@@ -85,7 +84,7 @@ class Proveedor(db.Model):
     nombre = db.Column(db.String(50), nullable=False)
     contacto = db.Column(db.String(50))
 
-    accesorios = db.relationship('Accesorio', backref='proveedor_relacionado', lazy=True)
+    accesorios = db.relationship('Accesorio', backref='proveedor_relacionado', lazy=True, overlaps="accesorios_relacionado")
 
     def to_dict(self):
         return {
@@ -101,7 +100,7 @@ class Accesorio(db.Model):
     compatible_con = db.Column(db.String(50))
     proveedor_id = db.Column(db.Integer, db.ForeignKey('proveedor.id'), nullable=False)
 
-    proveedor = db.relationship('Proveedor', backref=db.backref('accesorios_relacionado', lazy=True))
+    proveedor = db.relationship('Proveedor', backref=db.backref('accesorios_relacionado', lazy=True), overlaps="accesorios")
 
     def to_dict(self):
         return {
@@ -116,8 +115,8 @@ class EquipoAccesorio(db.Model):
     equipo_id = db.Column(db.Integer, db.ForeignKey('equipo.id'), primary_key=True)
     accesorio_id = db.Column(db.Integer, db.ForeignKey('accesorio.id'), primary_key=True)
 
-    equipo = db.relationship('Equipo', backref=db.backref('equipos_accesorios', lazy=True))
-    accesorio = db.relationship('Accesorio', backref=db.backref('equipos_accesorios', lazy=True))
+    equipo = db.relationship('Equipo', backref=db.backref('equipos_accesorios', lazy=True), overlaps="accesorios")
+    accesorio = db.relationship('Accesorio', backref=db.backref('equipos_accesorios', lazy=True), overlaps="equipo_accesorios")
 
 
 class Categoria(db.Model):
